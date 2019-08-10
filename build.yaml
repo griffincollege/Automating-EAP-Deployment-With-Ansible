@@ -1,0 +1,40 @@
+---
+- hosts: localhost
+  connection: local
+  vars:
+    # EAP 7 as the base image
+    image: registry.access.redhat.com/jboss-eap-7/eap72-openshift
+    # UBI 7 as the base image
+    # image: registry.access.redhat.com/ubi7/ubi
+    container_name: build_container
+    image_name: bzip2
+    container_engine: buildah
+  tasks:
+  - name: Fetch base image and create a container out of it
+    command: 'buildah from --name {{ container_name }} docker://{{ image }}'
+    become: true
+    when: container_engine == 'buildah'
+
+  - name: Add the created container to the inventory
+    add_host:
+      hostname: '{{ container_name }}'
+      ansible_connection: '{{ container_engine }}'
+      ansible_python_interpreter: /usr/bin/python3
+
+  - name: Run the role in the container
+    delegate_to: '{{ container_name }}'
+    include_role:
+      name: sample-bzip
+
+  - name: Ensure docker is running
+    service:
+      name: docker
+      state: started
+      enabled: yes
+
+  - block:
+    - name: Change default command of the container image
+      command: 'buildah config --cmd "nginx -g \"daemon off;\"" {{ container_name }}'
+    - name: Commmit the container and create an image
+      command: 'buildah commit --rm {{ container_name }} docker-daemon:{{ image_name }}:latest'
+    when: container_engine == 'buildah'
