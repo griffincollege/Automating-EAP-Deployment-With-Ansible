@@ -1,40 +1,25 @@
 ---
 - hosts: localhost
   connection: local
+  become: yes
   vars:
     # EAP 7 as the base image
     image: registry.access.redhat.com/jboss-eap-7/eap72-openshift
-    # UBI 7 as the base image
-    # image: registry.access.redhat.com/ubi7/ubi
-    container_name: build_container
-    image_name: bzip2
-    container_engine: buildah
+    container_name: hello-eap-working-container
+    image_name: hello-eap-container
   tasks:
   - name: Fetch base image and create a container out of it
-    command: 'buildah from --name {{ container_name }} docker://{{ image }}'
-    become: true
-    when: container_engine == 'buildah'
+    command: buildah from --name {{ container_name }} {{ image }}
 
-  - name: Add the created container to the inventory
-    add_host:
-      hostname: '{{ container_name }}'
-      ansible_connection: '{{ container_engine }}'
-      ansible_python_interpreter: /usr/bin/python3
+  - name: Copy Application to {{ container_name }} 
+    command: buildah copy --chown jboss:jboss {{ container_name }} app.war /deployments/app.war
 
-  - name: Run the role in the container
-    delegate_to: '{{ container_name }}'
-    include_role:
-      name: sample-bzip
+  - name: Make Public Brodcast Ports Available For Container
+    command: buildah run {{ container_name }} sh -c 'echo "JAVA_OPTS=\"\$JAVA_OPTS -Djboss.bind.address=0.0.0.0 -Djboss.bind.address.management=0.0.0.0\"" >> /opt/eap/bin/standalone.conf'
 
-  - name: Ensure docker is running
-    service:
-      name: docker
-      state: started
-      enabled: yes
+  - name: Configure {{ container_name }} Entrypoint To Be standalone.sh
+    command: buildah config --entrypoint '/opt/eap/bin/standalone.sh' {{ container_name }}
 
-  - block:
-    - name: Change default command of the container image
-      command: 'buildah config --cmd "nginx -g \"daemon off;\"" {{ container_name }}'
-    - name: Commmit the container and create an image
-      command: 'buildah commit --rm {{ container_name }} docker-daemon:{{ image_name }}:latest'
-    when: container_engine == 'buildah'
+  - name: Create Image from {{ container_name }} Container
+    command: buildah commit {{ container_name }} {{ image_name }}
+
