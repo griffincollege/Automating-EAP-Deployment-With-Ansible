@@ -8,3 +8,6 @@
   tasks:
   - name: Fetch base image and create a container out of it
     command: podman run -dt --pod new:{{ pod_name }} --name {{ image_name }} {{ image_name }}
+
+  - name: Generate Kubernetes Pod Definition for {{ pod_name }}
+    command: podman generate kube -s {{ pod_name }}
