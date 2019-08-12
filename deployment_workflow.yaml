@@ -1,0 +1,15 @@
+---
+- name: SETUP - ENSURE TOOLS ARE INSTALLED
+  import_playbook: setup_environment.yaml
+
+- name: BUILDAH - CREATE EAP IMAGE
+  import_playbook: build_eap_application.yaml
+
+- name: PDOMAN - START POD
+  import_playbook: start_podman_pod.yaml
+
+- name: SKOPEO - COPY IMAGE TO REGISTRY
+  import_playbook: skopeo_deploy_to_registry.yaml
+
+# - name: OPENSHIFT - DEPLOY APPLICATION
+#   import_playbook:
