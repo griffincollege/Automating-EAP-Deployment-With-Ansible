@@ -1,0 +1,19 @@
+---
+- hosts: localhost
+  connection: local
+  become: yes
+  tasks:
+  - name: Ensure Buildah Is Correctly Installed to Proper Version
+    yum:
+      name: buildah-1.9.2-2.fc29.x86_64
+      state: present
+
+  - name: Ensure Podman Is Correctly Installed to Proper Version
+    yum:
+      name: podman-1.4.4-4.fc29.x86_64
+      state: present
+
+  - name: Ensure Skopeo Is Correctly Installed to Proper Version
+    yum:
+      name: skopeo-0.1.37-0.gite079f9d.fc29.x86_64
+      state: present
