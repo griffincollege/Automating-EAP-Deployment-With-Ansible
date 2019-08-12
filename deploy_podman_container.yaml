@@ -5,7 +5,6 @@
   vars:
     image_name: hello-eap-container
     pod_name: hello-eap-pod
-    podman_package: podman-1.4.4-4.fc29.x86_64
   tasks:
   - name: Fetch base image and create a container out of it
     command: podman run -dt --pod new:{{ pod_name }} --name {{ image_name }} {{ image_name }}
