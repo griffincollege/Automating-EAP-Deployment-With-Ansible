@@ -6,5 +6,5 @@
     image_name: hello-eap-container
   tasks:
   - name: Copy {{ image_name }} to external registry
-    command: echo "TODO: COPY"
+    command: skopeo copy containers-storage:localhost/{{ image_name }} {{ image_registry }}/{{ image_name }}
 
