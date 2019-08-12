@@ -1,0 +1,10 @@
+---
+- hosts: localhost
+  connection: local
+  become: yes
+  vars:
+    image_name: hello-eap-container
+  tasks:
+  - name: Copy {{ image_name }} to external registry
+    command: echo "TODO: COPY"
+

@@ -15,5 +15,5 @@
 
   - name: Ensure Skopeo Is Correctly Installed to Proper Version
     yum:
-      name: skopeo-0.1.37-0.gite079f9d.fc29.x86_64
+      name: skopeo-0.1.37-2.fc29.x86_64
       state: present

@@ -18,3 +18,8 @@
   - name: Generate Kubernetes Pod Definition for {{ pod_name }}
     command: podman generate kube -s {{ pod_name }}
     register: pod_definition
+
+  - name: Write Pod Definition to File
+    copy:
+      dest: "{{ pod_name }}.yaml"
+      content: "{{ pod_definition.stdout_lines }}"
