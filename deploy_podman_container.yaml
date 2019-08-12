@@ -17,3 +17,4 @@
 
   - name: Generate Kubernetes Pod Definition for {{ pod_name }}
     command: podman generate kube -s {{ pod_name }}
+    register: pod_definition
