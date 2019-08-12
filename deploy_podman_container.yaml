@@ -9,6 +9,12 @@
   - name: Fetch base image and create a container out of it
     command: podman run -dt --pod new:{{ pod_name }} --name {{ image_name }} {{ image_name }}
 
+  - name: Ensure Pod Is Up And Running
+    command: podman pod exists {{ pod_name }}
+    register: result
+    failed_when:
+      - result.rc == 1
+
   - name: Generate Kubernetes Pod Definition for {{ pod_name }}
     command: podman generate kube -s {{ pod_name }}
     register: pod_definition
