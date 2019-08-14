@@ -9,7 +9,7 @@
   import_playbook: start_podman_pod.yaml
 
 - name: SKOPEO - COPY IMAGE TO REGISTRY
-  import_playbook: skopeo_deploy_to_registry.yaml
+  import_playbook: skopeo_copy_to_registry.yaml
 
 # - name: OPENSHIFT - DEPLOY APPLICATION
 #   import_playbook:
