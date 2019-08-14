@@ -7,7 +7,7 @@
     pod_name: hello-eap-pod
   tasks:
   - name: Fetch base image and create a container out of it
-    command: podman run -dt --pod new:{{ pod_name }} --name {{ image_name }} {{ image_name }}
+    command: podman run -d -p 8080:8080 --pod new:{{ pod_name }} --name {{ image_name }} {{ image_name }}
 
   - name: Ensure Pod Is Up And Running
     command: podman pod exists {{ pod_name }}
