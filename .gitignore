@@ -1,2 +1,3 @@
 *.retry
-hello-eap-pod.yaml
+openshift-applier/
+*pod.yaml

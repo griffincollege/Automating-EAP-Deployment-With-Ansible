@@ -16,4 +16,4 @@
       - result.rc == 1
 
   - name: Generate Kubernetes Pod Definition for {{ pod_name }}
-    shell: podman generate kube {{ pod_name }} > {{ pod_name }}.yaml
+    shell: podman generate kube {{ pod_name }} > files/pod.yaml

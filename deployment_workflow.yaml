@@ -11,5 +11,5 @@
 - name: SKOPEO - COPY IMAGE TO REGISTRY
   import_playbook: skopeo_copy_to_registry.yaml
 
-# - name: OPENSHIFT - DEPLOY APPLICATION
-#   import_playbook:
+- name: OPENSHIFT - DEPLOY APPLICATION
+  import_playbook: openshift_apply_application.yaml

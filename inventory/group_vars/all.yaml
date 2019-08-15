@@ -1,0 +1,13 @@
+---
+openshift_cluster_content:
+  - object: Create hello-eap
+    content:
+      - name: Pod
+        file: "{{ playbook_dir }}/files/pod.yaml"
+        namespace: "hello-eap"
+      - name: Route
+        file: "{{ playbook_dir }}/files/route.yaml"
+        namespace: "hello-eap"
+      - name: Service
+        file: "{{ playbook_dir }}/files/service.yaml"
+        namespace: "hello-eap"
