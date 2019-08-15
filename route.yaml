@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Route
+metadata:
+  name: hello-eap
+spec:
+  port:
+    targetPort: 8080
+  to:
+    kind: Service
+    name: hello-eap
+    weight: 100
+  wildcardPolicy: None
