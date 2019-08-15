@@ -4,7 +4,7 @@
   become: yes
   vars:
     # EAP 7 as the base image
-    image: registry.access.redhat.com/jboss-eap-7/eap72-openshift
+    image: registry.access.redhat.com/jboss-eap-6/eap64-openshift
     container_name: hello-eap-working-container
     image_name: hello-eap-container
   tasks:
