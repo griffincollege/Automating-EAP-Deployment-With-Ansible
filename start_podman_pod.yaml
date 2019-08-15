@@ -17,3 +17,9 @@
 
   - name: Generate Kubernetes Pod Definition for {{ pod_name }}
     shell: podman generate kube {{ pod_name }} > files/pod.yaml
+
+  - name: Change Image Tag to Remote Registry
+    replace:
+      path: files/pod.yaml
+      regexp: "localhost/{{ image_name }}"
+      replace: "{{ image_registry }}/{{ image_name }}"
